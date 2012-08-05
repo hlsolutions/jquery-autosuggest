@@ -1,0 +1,368 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>jQuery AutoSuggest by hlsolutions</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>jQuery AutoSuggest</h1>
+        <p>An AutoSuggest jQuery plugin.</p>
+
+        <p class="view"><a href="https://github.com/hlsolutions/jquery-autosuggest">View the Project on GitHub <small>hlsolutions/jquery-autosuggest</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/hlsolutions/jquery-autosuggest/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/hlsolutions/jquery-autosuggest/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/hlsolutions/jquery-autosuggest">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>jQuery Autosuggest <a href="http://travis-ci.org/hlsolutions/jquery-autosuggest"><img src="https://secure.travis-ci.org/hlsolutions/jquery-autosuggest.png?branch=master" alt="Build Status"></a>
+</h1>
+
+<p>The <em>jQuery plugin</em> <strong>AutoSuggest</strong> will turn any regular text <code>input</code> box into a awesome auto-complete and auto-suggest box. It will dynamically create all the HTML elements that it needs to function. You <em>don't need to add any extra HTML</em> to work with AutoSuggest. Also, AutoSuggest uses <strong>ZERO images</strong>! All styling is done 100% in the included CSS file. This means it is super easy to customize the look of everything! You only need to edit the included CSS file. You can even use images if you want, just add the appropriate lines of code into the CSS file.</p>
+
+<p><img src="https://github.com/downloads/hlsolutions/jquery-autosuggest/jquery-autosuggest-example01.png" alt="Example"></p>
+
+<p><em>Please note: This is a fork of the <a href="#note-on-the-original-version">original versions by Drew Wilson and Wu Yuntao</a>.</em></p>
+
+<h2>Getting Started</h2>
+
+<p>Download the <a href="https://raw.github.com/hlsolutions/jquery-autoSuggest/master/dist/jquery.autoSuggest.min.js">production version</a> or the <a href="https://raw.github.com/hlsolutions/jquery-autoSuggest/master/dist/jquery.autoSuggest.js">development version</a>. Don't forget the CSS <a href="https://raw.github.com/hlsolutions/jquery-autoSuggest/master/dist/jquery.autoSuggest.min.css">production version</a> or the <a href="https://raw.github.com/hlsolutions/jquery-autoSuggest/master/dist/jquery.autoSuggest.css">development version</a>.</p>
+
+<p>In your web page:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"dist/jquery.autoSuggest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'input[type=text]'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<p><em>Note: jQuery version 1.5 or above is required.</em></p>
+
+<p>More examples see <a href="#examples">here</a>.</p>
+
+<h2>How It Works</h2>
+
+<p>As you type into the AutoSuggest <code>input</code> box, it will filter through its <code>data</code> and suggest matched items to you. You can pass in an object of data or you can have it call a URL as you type to get its data from. AutoSuggest will display the matched items in a selectable list, which is 100% customizable. You have the option of structuring the HTML elements of that list however you want via the <code>formatList</code> callback function.</p>
+
+<p>When you type into the <code>input</code> box and the "suggestion" dropdown list appears, a few things happen:</p>
+
+<ul>
+<li>A <code>class</code> of "loading" is applied to the main AutoSuggest <code>ul</code> while the data is loaded. That class is then removed when all processing has finished and before the suggestion results list is made visible.</li>
+<li>As you hover over each suggested option in the list a <code>class</code> of "selected" is added to that item, and then removed when you <code>mouseout</code>.</li>
+<li>When you make a selection the item is added to the <code>input</code> box. Also there is a hidden <code>input</code> field generated for each AutoSuggest box that stores the values (comma separated) of each item you have selected. This input box will have a unique ID as well as a class name of "as-values".</li>
+</ul><p>The plugin expects the data passed into it (or gathered from the URL) to be formatted in <a href="http://json.org/">JSON</a>. JSON is an extremely easy format to work with, and if you don't already... you should :) To learn more about JSON, check out Drew Wilson's post/video, <a href="http://code.drewwilson.com/entry/an-introduction-to-json">An Introduction to JSON</a>.</p>
+
+<p>When an AJAX request is made the search string is sent over in a param named "q" by default. However you can change that name with the <strong>queryParam</strong> option. Here is a default example AJAX request: <strong><a href="http://www.example.com/your/script/?q=mick">http://www.example.com/your/script/?q=mick</a></strong>
+"mick" would be the search query that was typed into the <code>input</code> box. Be sure to setup your server-side code to grab that param and send back some results.</p>
+
+<p>As of AutoSuggest version 1.4 you can now create selections by using the <strong>tab</strong> or <strong>comma</strong> keys. To do this simply type something into the box and hit the tab or comma keys. The selection is added to AutoSuggest in the exact same manner as if it were chosen from the Results dropdown.</p>
+
+<h2>Security: XSS safety</h2>
+
+<p>Since 1.7, this plugin prevents injecting JavaScript into the web page with techniques known as cross-site scripting (XSS). Both original version of Drew Wilson and the fork of Wu Yuntao are affected by this vulnerability.</p>
+
+<p>At first all foreign input or content have to be escaped correctly before inserting it as html into the web page. In addition to this, the selections state have be changed internally from a comma separated string into a more comfortable and at least reliable selections holder domain object.</p>
+
+<p>To prove this statement, special test cases could be found at <code>test/jquery.autoSuggest_test.js</code>. Feel free to contribute patches. We will like it!</p>
+
+<h2>Browser compatibility</h2>
+
+<p><em>Needs updates.</em></p>
+
+<p>AutoSuggest has been tested (and works) in:</p>
+
+<ul>
+<li>IE6, IE7, IE8, IE9</li>
+<li>Firefox (all)</li>
+<li>Safari (all)</li>
+<li>Opera (all?)</li>
+<li>Chrome (all)</li>
+</ul><h2>Documentation</h2>
+
+<h3><code>data</code></h3>
+
+<p>Use an <code>array</code> if you want to define a static list of items. Each item must be an object with properties which will match your <code>options</code> keys <code>selectedItemProp</code>, <code>selectedValuesProp</code> and <code>searchObjProps</code>.</p>
+
+<p>Use a <code>function</code> returning an <code>array</code> if you want to define dynamic builder of a list of items. The structure of this list must be the same as described for an <code>array</code>.</p>
+
+<p>Use a <code>string</code> if you want to load the data asynchronously via AJAX. Eventually, in that case you want to override the option <code>afterRequest</code> to match the specification of a data array.</p>
+
+<h3><code>options</code></h3>
+
+<ul>
+<li><p><strong>ajaxOptions</strong>: <em>object (type : 'get', dataType : 'json' by default)</em> - Defines the configuration options which will be applied to <strong>$.ajax</strong> when using Ajax on search.</p></li>
+<li><p><strong>onAjaxRequestAlways</strong>: <em>deferred callback function</em> (deferred chaining of jQuery) - Defines a callback which will be called regardless of the response.</p></li>
+<li><p><strong>onAjaxRequestDone</strong>: <em>deferred callback function</em> (deferred chaining of jQuery) - Defines a callback which will be called when the response succeeded.</p></li>
+<li><p><strong>onAjaxRequestFail</strong>: <em>deferred callback function</em> (deferred chaining of jQuery) - Defines a callback which will be called when the response failed.</p></li>
+<li><p><strong>asHtmlID</strong>: <em>string (false by default)</em> - Enables you to specify your own custom ID that will be appended to the top level AutoSuggest UL element's ID name. Otherwise it will default to using a random ID. Example: id="CUSTOM_ID". This is also applies to the hidden input filed that holds all of the selected values. Example: id="as-values-CUSTOM_ID"</p></li>
+<li><p><strong>startText</strong>: <em>string ("Enter Name Here" by default)</em> - Text to display when the AutoSuggest input field is empty.</p></li>
+<li><p><strong>usePlaceholder</strong>: <em>true or false (false by default)</em> - Set HTML5 placeholder attribute to display <em>startText</em> when the input field is empty.</p></li>
+<li><p><strong>emptyText</strong>: <em>string ("No Results" by default)</em> - Text to display when their are no search results.</p></li>
+<li><p><strong>preFill</strong>: <em>object or string (empty object by default)</em> - Enables you to pre-fill the AutoSuggest box with selections when the page is first loaded. You can pass in a comma separated list of values (a string), or an object. When using a string, each value is used as both the display text on the selected item and for it's value. When using an object, the options <code>selectedItemProp</code> will define the object property to use for the display text and <code>selectedValuesProp</code> will define the object property to use for the value for the selected item. Note: you must setup your preFill object in that format. A preFill object can look just like the example objects laid out above.</p></li>
+<li><p><strong>limitText</strong>: <em>string ("No More Selections Are Allowed" by default)</em> - Text to display when the number of selections has reached it's limit.</p></li>
+<li><p><strong>selectedItemProp</strong>: <em>string ("value" by default)</em> - Name of object property to use as the display text for each chosen item.</p></li>
+<li><p><strong>selectedValuesProp</strong>: <em>string ("value" by default)</em> - Name of object property to use as the value for each chosen item. This value will be stored into the hidden input field.</p></li>
+<li><p><strong>searchObjProps</strong>: <em>string ("value" by default)</em> - Comma separated list of object property names. The values in these objects properties will be used as the text to perform the search on.</p></li>
+<li><p><strong>queryParam</strong>: <em>string ("q" by default)</em> - The name of the param that will hold the search string value in the AJAX request.</p></li>
+<li><p><strong>retrieveLimit</strong>: <em>number (false by default)</em> - If set to a number, it will add a '&amp;limit=' param to the AJAX request. It also limits the number of search results allowed to be displayed in the results dropdown box.</p></li>
+<li><p><strong>extraParams</strong>: <em>callback object</em> OR <em>function</em> OR <em>string ("" by default)</em> - Before <strong>AutoSuggest 2</strong>, this will be added onto the end of the AJAX request URL. Since <strong>version 2</strong>, the recommended way to define <code>extraParams</code> is a static object or a function returning a object. These params will be applied to the Ajax call's params. If you are using the old -- but still supported -- way defining a string, make sure you add an '&amp;' before each param. If used as a callback function, it must return a string or an object. The callback function is fired before each search is performed.</p></li>
+<li><p><strong>matchCase</strong>: <em>true or false (false by default)</em> - Make the search case sensitive when set to true.</p></li>
+<li><p><strong>minChars</strong>: <em>number (1 by default)</em> - Minimum number of characters that must be entered into the AutoSuggest input field before the search begins.</p></li>
+<li><p><strong>keyDelay</strong>: <em>number (400 by default)</em> - Number of milliseconds to delay after a keydown on the AutoSuggest input field and before search is started.</p></li>
+<li><p><strong>resultsHighlight</strong>: <em>true or false (true by default)</em> - Option to choose whether or not to highlight the matched text in each result item.</p></li>
+<li><p><strong>neverSubmit</strong>: <em>true or false (false by default)</em> - If set to <code>true</code> this option will never allow the 'return' key to submit the form that AutoSuggest is a part of.</p></li>
+<li><p><strong>selectionLimit</strong>: <em>number (false by default)</em> - Limits the number of selections that are allowed to be made to the number specified.</p></li>
+<li><p><strong>showResultList</strong>: <em>true or false (true by default)</em> - If set to <code>false</code>, the Results Dropdown List will never be shown at any time.</p></li>
+<li><p><strong>start</strong>: <em>callback function</em> - Custom function that is run only once on each AutoSuggest field when the code is first applied. A set of callbacks are passed. The callbacks are <code>add</code> (for selecting a data item from code -- pass the whole item to select) and <code>remove</code> (for removing a selected item from code -- pass the value).</p></li>
+<li><p><strong>selectionClick</strong>: <em>callback function</em> - Custom function that is run when a previously chosen item is clicked. The item that is clicked is passed into this callback function as 'elem'.
+<code>Example: selectionClick: function(elem){ elem.fadeTo("slow", 0.33); }</code></p></li>
+<li><p><strong>selectionAdded</strong>: <em>callback function</em> - Custom function that is run when a selection is made by choosing one from the Results dropdown, or by using the tab/comma keys to add one. The selection item is passed into this callback function as 'elem'.
+<code>Example: selectionAdded: function(elem){ elem.fadeTo("slow", 0.33); }</code></p></li>
+<li><p><strong>selectionRemoved</strong>: <em>callback function</em> - Custom function that is run when a selection removed from the AutoSuggest by using the delete key or by clicking the "x" inside the selection. The selection item is passed into this callback function as 'elem'.
+<code>Example: selectionRemoved: function(elem){ elem.fadeTo("fast", 0, function(){ elem.remove(); }); }</code></p></li>
+<li><p><strong>formatList</strong>: <em>callback function</em> - Custom function that is run after all the data has been retrieved and before the results are put into the suggestion results list. This is here so you can modify what &amp; how things show up in the suggestion results list.</p></li>
+<li><p><strong>beforeRequest</strong>: <em>callback function</em> - Custom function that is run right before the AJAX request is made, or before the local objected is searched. This is used to modify the search string before it is processed. So if a user entered "jim" into the AutoSuggest box, you can call this function to prepend their query with "guy_". Making the final query = "guy_jim". The search query is passed into this function. <code>Example: beforeRequest: function(string){ return string; }</code></p></li>
+<li><p><strong>afterRequest</strong>: <em>callback function</em> - Custom function that is run after the ajax request has completed. The data object MUST be returned if this is used. <code>Example: afterRequest: function(data){ return data; }</code></p></li>
+<li><p><strong>resultClick</strong>: <em>callback function</em> - Custom function that is run when a search result item is clicked. The data from the item that is clicked is passed into this callback function as 'data'.
+<code>Example: resultClick: function(data){ console.log(data); }</code></p></li>
+<li><p><strong>resultsComplete</strong>: <em>callback function</em> - Custom function that is run when the suggestion results dropdown list is made visible. Will run after every search query.</p></li>
+<li><p><strong>preventPropagationOnEscape</strong>: <em>true or false (false by default)</em> - If set to <code>true</code> this option will prevent bubbling events when the Escape key was pressed.</p></li>
+</ul><p>The <strong>formatList</strong> option will hand you 2 objects:</p>
+
+<ul>
+<li>
+<strong>data</strong>: This is the data you originally passed into AutoSuggest (or retrieved via an AJAX request)</li>
+<li>
+<strong>elem</strong>: This is the HTML element you will be formatting (the 'result' <code>li</code> item).</li>
+</ul><p>In order to add extra things to the 'result' item (like an image) you will need to make sure you pass that data into AutoSuggest. Below is an example of formatList in action:</p>
+
+<pre><code>formatList: function(data, elem){
+    var my_image = data.image;
+    var new_elem = elem.html("add/change stuff here, put image here, etc.");
+    return new_elem;
+}
+</code></pre>
+
+<p>You MUST return the HTML object. <strong>formatList</strong> will run on each 'result' item.</p>
+
+<h2>Examples</h2>
+
+<h3>Multiple elements on one page</h3>
+
+<p>The above line of code will apply <em>AutoSuggest</em> to all text type input elements on the page. Each one will be using the same set of <code>data</code>. If you want to have multiple <em>AutoSuggest</em> fields on your page that use different sets of <code>data</code>, make sure you select them separately. Like this:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"dist/jquery.autoSuggest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'div.someClass input'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'#someID input'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="nx">other_data</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<p>Doing the above will allow you to pass in different options and different <code>data</code> sets.</p>
+
+<h3>Setup with static data</h3>
+
+<p>Below is an example of using <em>AutoSuggest</em> with a <code>data</code> Object and other various options:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"dist/jquery.autoSuggest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="nx">value</span><span class="o">:</span> <span class="s2">"21"</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">"Mick Jagger"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nx">value</span><span class="o">:</span> <span class="s2">"43"</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">"Johnny Storm"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nx">value</span><span class="o">:</span> <span class="s2">"46"</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">"Richard Hatch"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nx">value</span><span class="o">:</span> <span class="s2">"54"</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">"Kelly Slater"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nx">value</span><span class="o">:</span> <span class="s2">"55"</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">"Rudy Hamilton"</span><span class="p">},</span>
+    <span class="p">{</span><span class="nx">value</span><span class="o">:</span> <span class="s2">"79"</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">"Michael Jordan"</span><span class="p">}</span>
+  <span class="p">]};</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"input[type=text]"</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="p">{</span><span class="nx">selectedItemProp</span><span class="o">:</span> <span class="s2">"name"</span><span class="p">,</span> <span class="nx">searchObjProps</span><span class="o">:</span> <span class="s2">"name"</span><span class="p">});</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<h3>Setup using AJAX</h3>
+
+<p>Below is an example using a <em>URL</em> to gather the Data Object via <em>AJAX</em> and other various options:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"dist/jquery.autoSuggest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"input[type=text]"</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="s2">"http://example.com/path/to/script"</span><span class="p">,</span> <span class="p">{</span><span class="nx">minChars</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">matchCase</span><span class="o">:</span> <span class="kc">true</span><span class="p">});</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<p>The "value" property will be stored comma separated in a hidden input field when chosen from the "suggestion" dropdown list. You can see an example of the "value" property being set for each data item in the example above. Typically the "value" property would contain the ID of the item, so you can send a list of <em>chosen IDs</em> to your server.</p>
+
+<h3>Setup using a data builder via function (no AJAX)</h3>
+
+<p>If the available data will change (i.e. if you progressively or asynchronously load more data for autosuggesting), you can pass a function to autosuggest as the data source.</p>
+
+<p>The function will be passed two arguments:</p>
+
+<ul>
+<li>
+<code>query</code> - the string typed in the autosuggest box</li>
+<li>
+<code>next</code> - the <code>function(data, query)</code> you should call when you have the data available</li>
+</ul><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"dist/jquery.autoSuggest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">slowly_loaded_data</span> <span class="o">=</span> <span class="p">{</span><span class="nx">items</span><span class="o">:</span> <span class="p">[]};</span>
+
+  <span class="c1">// Obviously, you'd do something more interesting here.</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">slowly_loaded_data</span> <span class="o">=</span> <span class="p">{</span><span class="nx">items</span><span class="o">:</span> <span class="p">[{</span><span class="nx">value</span><span class="o">:</span> <span class="s1">'11'</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">'A name'</span><span class="p">}]};</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+
+  <span class="kd">function</span> <span class="nx">get_data</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">next</span><span class="p">(</span><span class="nx">slowly_loaded_data</span><span class="p">,</span> <span class="nx">query</span><span class="p">);</span>
+  <span class="p">};</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"input[type=text]"</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="nx">get_data</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<h3>Example of backend (i.e. PHP)</h3>
+
+<p>Below is an example of how to process the data sent <em>via AJAX</em> to your server in <em>PHP</em>:</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$input</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"q"</span><span class="p">];</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+<span class="c1">// query your DataBase here looking for a match to $input</span>
+<span class="c1">// DO NOT use this in production. ESCAPE ALWAYS! This is just a simplified example.</span>
+<span class="nv">$query</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">"SELECT * FROM my_table WHERE my_field LIKE '%</span><span class="si">$input</span><span class="s2">%'"</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nb">mysql_fetch_assoc</span><span class="p">(</span><span class="nv">$query</span><span class="p">))</span> <span class="p">{</span>
+  <span class="nv">$json</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+  <span class="nv">$json</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$row</span><span class="p">[</span><span class="s1">'id'</span><span class="p">];</span>
+  <span class="nv">$json</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$row</span><span class="p">[</span><span class="s1">'username'</span><span class="p">];</span>
+  <span class="nv">$json</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$row</span><span class="p">[</span><span class="s1">'user_photo'</span><span class="p">];</span>
+  <span class="nv">$data</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$json</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">header</span><span class="p">(</span><span class="s2">"Content-type: application/json"</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</pre></div>
+
+<h2>Release History</h2>
+
+<h2>2012-07-?? Version 2.0.0</h2>
+
+<p>The plugin project now uses <strong>CoffeeScript</strong> and <strong>SASS</strong> for source building. The unit tests run still with <strong>QUnit</strong>. <strong>grunt</strong> is used to manage dependencies, tasks and tests. In addition, <strong>Travis CI</strong> is now checking every commit.</p>
+
+<ul>
+<li>The plugin itself was rewritten in CoffeeScript.</li>
+<li>The plugin's CSS was rewritten in SASS.</li>
+<li>The plugin's test (QUnit) were slightly modified to work against a newer QUnit version without deprecation warnings (i.e. <code>equal</code> instead of <code>equals</code>).</li>
+<li>Support for Travis CI was added.</li>
+<li>Reduced memory consumption moving some local to global defined util functions.</li>
+<li>Extended <code>extraParams</code> being a plain object (with downgrade compatibility).</li>
+<li>Changed the Ajax call from <code>$.getJSON</code> to the more flexible <code>$.ajax</code>, besides introduced <code>ajaxOptions</code>.</li>
+<li>
+<strong>API change</strong>: <em>beforeRetrieve</em> was renamed to <em>beforeRequest</em> and added the second argument <code>options</code>.</li>
+<li>
+<strong>API change</strong>: <em>retrieveComplete</em> was renamed to <em>afterRequest</em>.</li>
+</ul><h2>2012-07-03 Version 1.7.0</h2>
+
+<ul>
+<li>Fixed handling with comma containing values</li>
+<li>Fixed handling with HTML special characters like ", &gt;, &lt;. These characters will be encoded.</li>
+<li>Added support of HTML renderers in addition to the XSS issues.</li>
+</ul><h2>License</h2>
+
+<p>Copyright (c) 2012 Jan Philipp
+Licensed under the MIT, GPL licenses.</p>
+
+<h2>Contributing</h2>
+
+<p>In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using <a href="https://github.com/cowboy/grunt">grunt</a>.</p>
+
+<h3>Important notes</h3>
+
+<p>Please don't edit files in the <code>dist</code> subdirectory as they are generated via grunt. You'll find source code in the <code>src</code> subdirectory!</p>
+
+<p>While grunt can run the included unit tests via PhantomJS, this shouldn't be considered a substitute for the real thing. Please be sure to test the <code>test/*.html</code> unit test file(s) in <em>actual</em> browsers.</p>
+
+<h3>Installing grunt</h3>
+
+<p><em>This assumes you have <a href="http://nodejs.org/">node.js</a> and <a href="http://npmjs.org/">npm</a> installed already.</em></p>
+
+<ol>
+<li>Test that grunt is installed globally by running <code>grunt --version</code> at the command-line.</li>
+<li>If grunt isn't installed globally, run <code>npm install -g grunt</code> to install the latest version. <em>You may need to run <code>sudo npm install -g grunt</code>.</em>
+</li>
+<li>From the root directory of this project, run <code>npm install</code> to install the project's dependencies.</li>
+</ol><h3>Installing PhantomJS</h3>
+
+<p>In order for the qunit task to work properly, <a href="http://www.phantomjs.org/">PhantomJS</a> must be installed and in the system PATH (if you can run "phantomjs" at the command line, this task should work).</p>
+
+<p>Unfortunately, PhantomJS cannot be installed automatically via npm or grunt, so you need to install it yourself. There are a number of ways to install PhantomJS.</p>
+
+<ul>
+<li><a href="http://ariya.ofilabs.com/2012/02/phantomjs-and-mac-os-x.html">PhantomJS and Mac OS X</a></li>
+<li>
+<a href="http://code.google.com/p/phantomjs/wiki/Installation">PhantomJS Installation</a> (PhantomJS wiki)</li>
+</ul><p>Note that the <code>phantomjs</code> executable needs to be in the system <code>PATH</code> for grunt to see it.</p>
+
+<ul>
+<li><a href="http://www.computerhope.com/issues/ch000549.htm">How to set the path and environment variables in Windows</a></li>
+<li><a href="http://superuser.com/questions/69130/where-does-path-get-set-in-os-x-10-6-snow-leopard">Where does $PATH get set in OS X 10.6 Snow Leopard?</a></li>
+<li><a href="https://www.google.com/search?q=How+do+I+change+the+PATH+variable+in+Linux">How do I change the PATH variable in Linux</a></li>
+</ul><h3>Additional requirements</h3>
+
+<p><em>Note: It can be helpful to look into the <code>.travis.yml</code> (configuration file for Travis CI Build system) which contains required dependencies.</em></p>
+
+<p>Following modules are required:</p>
+
+<ul>
+<li>CoffeeScript - install via <code>npm install -g coffee-script</code>
+</li>
+<li>SASS - install via <code>gem install sass</code>
+</li>
+<li>Sqwish - install <code>npm install -g sqwish</code>
+</li>
+</ul><h1>Note on the original version</h1>
+
+<p>This project was a fork of <strong>jQuery AutoSuggest</strong> (1.6) by <a href="https://github.com/wuyuntao">Wu Yuntao</a> at <a href="https://github.com/wuyuntao/jquery-autosuggest">https://github.com/wuyuntao/jquery-autosuggest</a>.</p>
+
+<p>Originally, <strong>jQuery AutoSuggest</strong> (1.4) was developed by <a href="http://drewwilson.com/">Drew Wilson</a> at <a href="http://code.drewwilson.com/entry/autosuggest-jquery-plugin/">http://code.drewwilson.com/entry/autosuggest-jquery-plugin/</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/hlsolutions">hlsolutions</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33240227-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
