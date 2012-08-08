@@ -152,6 +152,12 @@ $.fn.autoSuggest = (data, options) ->
     selectedValuesProp : 'value'
 
     ###*
+     * Defines wether the result list should be filtered or not.
+     * @type boolean default true
+    ###
+    searchActive : true
+
+    ###*
      * Defines the property of an item which will be used for searching.
      * @type string default 'value'
     ###
@@ -509,6 +515,7 @@ $.fn.autoSuggest = (data, options) ->
       input.focus()
       return
     selectionsContainer.mousedown ->
+      selectionsContainer.children().removeClass 'selected'
       input_focus = false
       return
     # Append selectionsContainer to DOM.
@@ -560,7 +567,7 @@ $.fn.autoSuggest = (data, options) ->
         if str
           unless options.matchCase
             str = str.toLowerCase()
-          if str.indexOf(query) isnt -1 && !currentSelection.exist(item[options.selectedValuesProp])
+          if !options.searchActive || (str.indexOf(query) isnt -1 && !currentSelection.exist(item[options.selectedValuesProp]))
             forward = true
         if forward
           formatted = $ "<li class=\"as-result-item\" id=\"as-result-item-#{num}\"></li>"
@@ -617,7 +624,7 @@ $.fn.autoSuggest = (data, options) ->
       if matchCount <= 0
         resultsList.html "<li class=\"as-message\">#{options.emptyText}</li>"
       resultsList.css width : selectionsContainer.outerWidth()
-      if matchCount > 0 || !options.showResultListWhenNoMatch
+      if matchCount > 0 || options.showResultListWhenNoMatch
         resultsContainer.show()
       if $.isFunction(options.resultsComplete) then options.resultsComplete.call @
       return

@@ -1,4 +1,4 @@
-/*! jQuery AutoSuggest - v2.0.0 - 2012-07-22
+/*! jQuery AutoSuggest - v2.0.0 - 2012-08-08
 * http://hlsolutions.github.com/jquery-autosuggest
 * Copyright (c) 2012 Jan Philipp; Licensed MIT, GPL */
 
@@ -215,6 +215,12 @@ Based on the 1.6er release dated in July, 2012
       */
 
       selectedValuesProp: 'value',
+      /**
+       * Defines wether the result list should be filtered or not.
+       * @type boolean default true
+      */
+
+      searchActive: true,
       /**
        * Defines the property of an item which will be used for searching.
        * @type string default 'value'
@@ -590,6 +596,7 @@ Based on the 1.6er release dated in July, 2012
         input.focus();
       });
       selectionsContainer.mousedown(function() {
+        selectionsContainer.children().removeClass('selected');
         input_focus = false;
       });
       selectionsContainer.after(resultsContainer);
@@ -649,7 +656,7 @@ Based on the 1.6er release dated in July, 2012
             if (!options.matchCase) {
               str = str.toLowerCase();
             }
-            if (str.indexOf(query) !== -1 && !currentSelection.exist(item[options.selectedValuesProp])) {
+            if (!options.searchActive || (str.indexOf(query) !== -1 && !currentSelection.exist(item[options.selectedValuesProp]))) {
               forward = true;
             }
           }
@@ -719,7 +726,7 @@ Based on the 1.6er release dated in July, 2012
         resultsList.css({
           width: selectionsContainer.outerWidth()
         });
-        if (matchCount > 0 || !options.showResultListWhenNoMatch) {
+        if (matchCount > 0 || options.showResultListWhenNoMatch) {
           resultsContainer.show();
         }
         if ($.isFunction(options.resultsComplete)) {
