@@ -1,4 +1,4 @@
-/*! jQuery AutoSuggest - v2.0.0 - 2012-08-08
+/*! jQuery AutoSuggest - v2.0.0 - 2012-08-09
 * http://hlsolutions.github.com/jquery-autosuggest
 * Copyright (c) 2012 Jan Philipp; Licensed MIT, GPL */
 
@@ -863,10 +863,10 @@ Based on the 1.6er release dated in July, 2012
             break;
           case 9:
           case 188:
+            active = resultsContainer.find('li.active:first');
             if (options.canGenerateNewSelections) {
               lastKeyWasTab = true;
               i_input = input.val().replace(/(,)/g, '');
-              active = resultsContainer.find('li.active:first');
               /* Generate a new bubble with text when no suggestion selected
               */
 
@@ -882,6 +882,12 @@ Based on the 1.6er release dated in July, 2012
 
                 abortRequest();
               }
+            }
+            if (active.length) {
+              lastKeyWasTab = false;
+              active.click();
+              resultsContainer.hide();
+              event.preventDefault();
             }
             break;
           case 13:
