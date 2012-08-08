@@ -1,4 +1,4 @@
-/*! jQuery AutoSuggest - v2.0.0 - 2012-07-22
+/*! jQuery AutoSuggest - v2.0.0 - 2012-08-08
 * http://hlsolutions.github.com/jquery-autosuggest
 * Copyright (c) 2012 Jan Philipp; Licensed MIT, GPL */
 
@@ -590,6 +590,7 @@ Based on the 1.6er release dated in July, 2012
         input.focus();
       });
       selectionsContainer.mousedown(function() {
+        selectionsContainer.children().removeClass('selected');
         input_focus = false;
       });
       selectionsContainer.after(resultsContainer);
