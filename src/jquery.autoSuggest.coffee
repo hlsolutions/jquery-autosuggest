@@ -152,6 +152,12 @@ $.fn.autoSuggest = (data, options) ->
     selectedValuesProp : 'value'
 
     ###*
+     * Defines wether the result list should be filtered or not.
+     * @type boolean default true
+    ###
+    searchActive : true
+
+    ###*
      * Defines the property of an item which will be used for searching.
      * @type string default 'value'
     ###
@@ -509,6 +515,7 @@ $.fn.autoSuggest = (data, options) ->
       input.focus()
       return
     selectionsContainer.mousedown ->
+      selectionsContainer.children().removeClass 'selected'
       input_focus = false
       return
     # Append selectionsContainer to DOM.
@@ -560,7 +567,7 @@ $.fn.autoSuggest = (data, options) ->
         if str
           unless options.matchCase
             str = str.toLowerCase()
-          if str.indexOf(query) isnt -1 && !currentSelection.exist(item[options.selectedValuesProp])
+          if !options.searchActive || (str.indexOf(query) isnt -1 && !currentSelection.exist(item[options.selectedValuesProp]))
             forward = true
         if forward
           formatted = $ "<li class=\"as-result-item\" id=\"as-result-item-#{num}\"></li>"
@@ -617,7 +624,7 @@ $.fn.autoSuggest = (data, options) ->
       if matchCount <= 0
         resultsList.html "<li class=\"as-message\">#{options.emptyText}</li>"
       resultsList.css width : selectionsContainer.outerWidth()
-      if matchCount > 0 || !options.showResultListWhenNoMatch
+      if matchCount > 0 || options.showResultListWhenNoMatch
         resultsContainer.show()
       if $.isFunction(options.resultsComplete) then options.resultsComplete.call @
       return
@@ -717,11 +724,11 @@ $.fn.autoSuggest = (data, options) ->
               return
             ), options.keyDelay
         when 9, 188 # tab, comma
+          active = resultsContainer.find('li.active:first')
           if options.canGenerateNewSelections
             lastKeyWasTab = true
             i_input = input.val().replace /(,)/g, ''
             # remove all comma
-            active = resultsContainer.find('li.active:first')
             ### Generate a new bubble with text when no suggestion selected ###
             if i_input isnt '' && !currentSelection.exist(i_input) && i_input.length >= options.minChars && active.length is 0
               event.preventDefault()
@@ -732,6 +739,11 @@ $.fn.autoSuggest = (data, options) ->
               input.val ''
               ### Cancel previous ajaxRequest when new tag is added ###
               abortRequest()
+          if active.length
+            lastKeyWasTab = false
+            active.click()
+            resultsContainer.hide()
+            event.preventDefault()
         when 13 # return
           lastKeyWasTab = false
           active = resultsContainer.find('li.active:first')
