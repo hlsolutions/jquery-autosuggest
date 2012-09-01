@@ -130,11 +130,11 @@
 <li><p><strong>selectionLimit</strong>: <em>number (false by default)</em> - Limits the number of selections that are allowed to be made to the number specified.</p></li>
 <li><p><strong>showResultList</strong>: <em>true or false (true by default)</em> - If set to <code>false</code>, the Results Dropdown List will never be shown at any time.</p></li>
 <li><p><strong>start</strong>: <em>callback function</em> - Custom function that is run only once on each AutoSuggest field when the code is first applied. A set of callbacks are passed. The callbacks are <code>add</code> (for selecting a data item from code -- pass the whole item to select) and <code>remove</code> (for removing a selected item from code -- pass the value).</p></li>
-<li><p><strong>selectionClick</strong>: <em>callback function</em> - Custom function that is run when a previously chosen item is clicked. The item that is clicked is passed into this callback function as 'elem'.
+<li><p><strong>selectionClick</strong>: (elem, item, selections) <em>callback function</em> - Custom function that is run when a previously chosen item is clicked. The item that is clicked is passed into this callback function as 'elem'.
 <code>Example: selectionClick: function(elem){ elem.fadeTo("slow", 0.33); }</code></p></li>
-<li><p><strong>selectionAdded</strong>: <em>callback function</em> - Custom function that is run when a selection is made by choosing one from the Results dropdown, or by using the tab/comma keys to add one. The selection item is passed into this callback function as 'elem'.
+<li><p><strong>selectionAdded</strong>: (elem, item, selections) <em>callback function</em> - Custom function that is run when a selection is made by choosing one from the Results dropdown, or by using the tab/comma keys to add one. The selection item is passed into this callback function as 'elem'.
 <code>Example: selectionAdded: function(elem){ elem.fadeTo("slow", 0.33); }</code></p></li>
-<li><p><strong>selectionRemoved</strong>: <em>callback function</em> - Custom function that is run when a selection removed from the AutoSuggest by using the delete key or by clicking the "x" inside the selection. The selection item is passed into this callback function as 'elem'.
+<li><p><strong>selectionRemoved</strong>: (elem, item, selections) <em>callback function</em> - Custom function that is run when a selection removed from the AutoSuggest by using the delete key or by clicking the "x" inside the selection. The selection item is passed into this callback function as 'elem'.
 <code>Example: selectionRemoved: function(elem){ elem.fadeTo("fast", 0, function(){ elem.remove(); }); }</code></p></li>
 <li><p><strong>formatList</strong>: <em>callback function</em> - Custom function that is run after all the data has been retrieved and before the results are put into the suggestion results list. This is here so you can modify what &amp; how things show up in the suggestion results list.</p></li>
 <li><p><strong>beforeRequest</strong>: <em>callback function</em> - Custom function that is run right before the AJAX request is made, or before the local objected is searched. This is used to modify the search string before it is processed. So if a user entered "jim" into the AutoSuggest box, you can call this function to prepend their query with "guy_". Making the final query = "guy_jim". The search query is passed into this function. <code>Example: beforeRequest: function(string){ return string; }</code></p></li>
@@ -247,7 +247,7 @@
 
 <p>Below is an example of how to process the data sent <em>via AJAX</em> to your server in <em>PHP</em>:</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"q"</span><span class="p">];</span>
 <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 <span class="c1">// query your DataBase here looking for a match to $input</span>
