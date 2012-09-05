@@ -95,71 +95,374 @@
 <li>Chrome (all)</li>
 </ul><h2>Documentation</h2>
 
-<h3><code>data</code></h3>
+<p>The plugin's constructor expects two arguments: <code>data</code> and <code>options</code>.</p>
 
-<p>Use an <code>array</code> if you want to define a static list of items. Each item must be an object with properties which will match your <code>options</code> keys <code>selectedItemProp</code>, <code>selectedValuesProp</code> and <code>searchObjProps</code>.</p>
-
-<p>Use a <code>function</code> returning an <code>array</code> if you want to define dynamic builder of a list of items. The structure of this list must be the same as described for an <code>array</code>.</p>
-
-<p>Use a <code>string</code> if you want to load the data asynchronously via AJAX. Eventually, in that case you want to override the option <code>afterRequest</code> to match the specification of a data array.</p>
-
-<h3><code>options</code></h3>
+<p>The first argument <code>data</code> defines how the suggested results will be retrieved:</p>
 
 <ul>
-<li><p><strong>ajaxOptions</strong>: <em>object (type : 'get', dataType : 'json' by default)</em> - Defines the configuration options which will be applied to <strong>$.ajax</strong> when using Ajax on search.</p></li>
-<li><p><strong>onAjaxRequestAlways</strong>: <em>deferred callback function</em> (deferred chaining of jQuery) - Defines a callback which will be called regardless of the response.</p></li>
-<li><p><strong>onAjaxRequestDone</strong>: <em>deferred callback function</em> (deferred chaining of jQuery) - Defines a callback which will be called when the response succeeded.</p></li>
-<li><p><strong>onAjaxRequestFail</strong>: <em>deferred callback function</em> (deferred chaining of jQuery) - Defines a callback which will be called when the response failed.</p></li>
-<li><p><strong>asHtmlID</strong>: <em>string (false by default)</em> - Enables you to specify your own custom ID that will be appended to the top level AutoSuggest UL element's ID name. Otherwise it will default to using a random ID. Example: id="CUSTOM_ID". This is also applies to the hidden input filed that holds all of the selected values. Example: id="as-values-CUSTOM_ID"</p></li>
-<li><p><strong>startText</strong>: <em>string ("Enter Name Here" by default)</em> - Text to display when the AutoSuggest input field is empty.</p></li>
-<li><p><strong>usePlaceholder</strong>: <em>true or false (false by default)</em> - Set HTML5 placeholder attribute to display <em>startText</em> when the input field is empty.</p></li>
-<li><p><strong>emptyText</strong>: <em>string ("No Results" by default)</em> - Text to display when their are no search results.</p></li>
-<li><p><strong>preFill</strong>: <em>object or string (empty object by default)</em> - Enables you to pre-fill the AutoSuggest box with selections when the page is first loaded. You can pass in a comma separated list of values (a string), or an object. When using a string, each value is used as both the display text on the selected item and for it's value. When using an object, the options <code>selectedItemProp</code> will define the object property to use for the display text and <code>selectedValuesProp</code> will define the object property to use for the value for the selected item. Note: you must setup your preFill object in that format. A preFill object can look just like the example objects laid out above.</p></li>
-<li><p><strong>limitText</strong>: <em>string ("No More Selections Are Allowed" by default)</em> - Text to display when the number of selections has reached it's limit.</p></li>
-<li><p><strong>selectedItemProp</strong>: <em>string ("value" by default)</em> - Name of object property to use as the display text for each chosen item.</p></li>
-<li><p><strong>selectedValuesProp</strong>: <em>string ("value" by default)</em> - Name of object property to use as the value for each chosen item. This value will be stored into the hidden input field.</p></li>
-<li><p><strong>searchObjProps</strong>: <em>string ("value" by default)</em> - Comma separated list of object property names. The values in these objects properties will be used as the text to perform the search on.</p></li>
-<li><p><strong>queryParam</strong>: <em>string ("q" by default)</em> - The name of the param that will hold the search string value in the AJAX request.</p></li>
-<li><p><strong>retrieveLimit</strong>: <em>number (false by default)</em> - If set to a number, it will add a '&amp;limit=' param to the AJAX request. It also limits the number of search results allowed to be displayed in the results dropdown box.</p></li>
-<li><p><strong>extraParams</strong>: <em>callback object</em> OR <em>function</em> OR <em>string ("" by default)</em> - Before <strong>AutoSuggest 2</strong>, this will be added onto the end of the AJAX request URL. Since <strong>version 2</strong>, the recommended way to define <code>extraParams</code> is a static object or a function returning a object. These params will be applied to the Ajax call's params. If you are using the old -- but still supported -- way defining a string, make sure you add an '&amp;' before each param. If used as a callback function, it must return a string or an object. The callback function is fired before each search is performed.</p></li>
-<li><p><strong>matchCase</strong>: <em>true or false (false by default)</em> - Make the search case sensitive when set to true.</p></li>
-<li><p><strong>minChars</strong>: <em>number (1 by default)</em> - Minimum number of characters that must be entered into the AutoSuggest input field before the search begins.</p></li>
-<li><p><strong>keyDelay</strong>: <em>number (400 by default)</em> - Number of milliseconds to delay after a keydown on the AutoSuggest input field and before search is started.</p></li>
-<li><p><strong>resultsHighlight</strong>: <em>true or false (true by default)</em> - Option to choose whether or not to highlight the matched text in each result item.</p></li>
-<li><p><strong>neverSubmit</strong>: <em>true or false (false by default)</em> - If set to <code>true</code> this option will never allow the 'return' key to submit the form that AutoSuggest is a part of.</p></li>
-<li><p><strong>selectionLimit</strong>: <em>number (false by default)</em> - Limits the number of selections that are allowed to be made to the number specified.</p></li>
-<li><p><strong>showResultList</strong>: <em>true or false (true by default)</em> - If set to <code>false</code>, the Results Dropdown List will never be shown at any time.</p></li>
-<li><p><strong>start</strong>: <em>callback function</em> - Custom function that is run only once on each AutoSuggest field when the code is first applied. A set of callbacks are passed. The callbacks are <code>add</code> (for selecting a data item from code -- pass the whole item to select) and <code>remove</code> (for removing a selected item from code -- pass the value).</p></li>
-<li><p><strong>selectionClick</strong>: (elem, item, selections) <em>callback function</em> - Custom function that is run when a previously chosen item is clicked. The item that is clicked is passed into this callback function as 'elem'.
-<code>Example: selectionClick: function(elem){ elem.fadeTo("slow", 0.33); }</code></p></li>
-<li><p><strong>selectionAdded</strong>: (elem, item, selections) <em>callback function</em> - Custom function that is run when a selection is made by choosing one from the Results dropdown, or by using the tab/comma keys to add one. The selection item is passed into this callback function as 'elem'.
-<code>Example: selectionAdded: function(elem){ elem.fadeTo("slow", 0.33); }</code></p></li>
-<li><p><strong>selectionRemoved</strong>: (elem, item, selections) <em>callback function</em> - Custom function that is run when a selection removed from the AutoSuggest by using the delete key or by clicking the "x" inside the selection. The selection item is passed into this callback function as 'elem'.
-<code>Example: selectionRemoved: function(elem){ elem.fadeTo("fast", 0, function(){ elem.remove(); }); }</code></p></li>
-<li><p><strong>formatList</strong>: <em>callback function</em> - Custom function that is run after all the data has been retrieved and before the results are put into the suggestion results list. This is here so you can modify what &amp; how things show up in the suggestion results list.</p></li>
-<li><p><strong>beforeRequest</strong>: <em>callback function</em> - Custom function that is run right before the AJAX request is made, or before the local objected is searched. This is used to modify the search string before it is processed. So if a user entered "jim" into the AutoSuggest box, you can call this function to prepend their query with "guy_". Making the final query = "guy_jim". The search query is passed into this function. <code>Example: beforeRequest: function(string){ return string; }</code></p></li>
-<li><p><strong>afterRequest</strong>: <em>callback function</em> - Custom function that is run after the ajax request has completed. The data object MUST be returned if this is used. <code>Example: afterRequest: function(data){ return data; }</code></p></li>
-<li><p><strong>resultClick</strong>: <em>callback function</em> - Custom function that is run when a search result item is clicked. The data from the item that is clicked is passed into this callback function as 'data'.
-<code>Example: resultClick: function(data){ console.log(data); }</code></p></li>
-<li><p><strong>resultsComplete</strong>: <em>callback function</em> - Custom function that is run when the suggestion results dropdown list is made visible. Will run after every search query.</p></li>
-<li><p><strong>preventPropagationOnEscape</strong>: <em>true or false (false by default)</em> - If set to <code>true</code> this option will prevent bubbling events when the Escape key was pressed.</p></li>
-</ul><p>The <strong>formatList</strong> option will hand you 2 objects:</p>
+<li>Use an <code>array</code> if you want to define a static list of items. Each item must be an object with properties which will match your <code>options</code> keys <code>selectedItemProp</code>, <code>selectedValuesProp</code> and <code>searchObjProps</code>.</li>
+<li>Use a <code>function</code> returning an <code>array</code> if you want to define dynamic builder of a list of items. The structure of this list must be the same as described for an <code>array</code>.</li>
+<li>Use a <code>string</code> if you want to load the data asynchronously via AJAX. Eventually, in that case you want to override the option <code>afterRequest</code> to match the specification of a data array.</li>
+</ul><p>The second argument <code>options</code> specifies the behaviour of the plugin like data transformations, ajax options or event handling.</p>
+
+<p>In general, the options are grouped into following categories:</p>
 
 <ul>
-<li>
-<strong>data</strong>: This is the data you originally passed into AutoSuggest (or retrieved via an AJAX request)</li>
-<li>
-<strong>elem</strong>: This is the HTML element you will be formatting (the 'result' <code>li</code> item).</li>
-</ul><p>In order to add extra things to the 'result' item (like an image) you will need to make sure you pass that data into AutoSuggest. Below is an example of formatList in action:</p>
+<li>General</li>
+<li>Data</li>
+<li>Ajax</li>
+<li>Callbacks</li>
+</ul><h3>General</h3>
 
-<pre><code>formatList: function(data, elem){
-    var my_image = data.image;
-    var new_elem = elem.html("add/change stuff here, put image here, etc.");
-    return new_elem;
-}
-</code></pre>
+<h4>asHtmlID (string)</h4>
 
-<p>You MUST return the HTML object. <strong>formatList</strong> will run on each 'result' item.</p>
+<p>Enables you to specify your own custom element id. Otherwise it will default to using a random element id.
+This is also applies to the hidden input filed that holds all of the selected values.</p>
+
+<div class="highlight"><pre><span class="c1">// example</span>
+<span class="p">{</span>
+  <span class="nx">id</span> <span class="o">:</span> <span class="s1">'CUSTOM_ID'</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>I.e., the id of the hidden input input will be now <code>as-values-CUSTOM_ID</code>.</p>
+
+<h4>inputAttrs (object)</h4>
+
+<p>Specify additional attributes which will be applied to each input on setup.</p>
+
+<p>Default:</p>
+
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nx">autocomplete</span> <span class="o">:</span> <span class="s1">'off'</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>matchCase (boolean)</h4>
+
+<p>Specify whether the search/highlight should be case sensitive.</p>
+
+<p>Default: <code>false</code></p>
+
+<h4>minChars (number)</h4>
+
+<p>Minimum number of characters that must be entered into the input field before the search begins.</p>
+
+<p>Default: <code>1</code></p>
+
+<h4>neverSubmit (boolean)</h4>
+
+<p>If set to <code>true</code> this option will never allow the <em>return key</em> to submit the form that AutoSuggest is a part of.</p>
+
+<p>Default: <code>false</code></p>
+
+<h4>selectionLimit (number)</h4>
+
+<p>Specifiy the number of selections that are allowed to be made.</p>
+
+<p>Default: <code>false</code></p>
+
+<h4>preventPropagationOnEscape (boolean)</h4>
+
+<p>If set to <code>true</code> this option will prevent bubbling events when the <em>escape key</em> was pressed.</p>
+
+<p>Default: <code>false</code></p>
+
+<h4>searchActive (boolean)</h4>
+
+<p>If set to <code>true</code> this option will prevent the plugin filters the retrieved data again regardless whether the item was already selected.</p>
+
+<p>Default: <code>false</code></p>
+
+<h4>remoteFilter (boolean/string)</h4>
+
+<p>If set to <code>false</code> this option will prevent the plugin filters the retrieved data again. If set to <code>'auto'</code> the plugin will resolve this setting regarding the datasource is a server or not. The idea is that in case of a server side response the data are already filtered.</p>
+
+<p>Default: <code>true</code></p>
+
+<h3>Data</h3>
+
+<h4>selectedItemProp (string)</h4>
+
+<p>Specifiy the name of the property to use as the display text for each chosen item.</p>
+
+<p>Default: <code>'value'</code></p>
+
+<h4>selectedValuesProp (string)</h4>
+
+<p>Specify the name of the property to use as the value for each chosen item.</p>
+
+<p>This option configures the id values which will be stored into the hidden input field.</p>
+
+<p>Default: <code>'value'</code></p>
+
+<h4>searchObjProps (string)</h4>
+
+<p>Specify a comma separated list of property names. The values in these objects properties will be used to perform the search/highlight on.</p>
+
+<p>Default: <code>'value'</code></p>
+
+<h4>Example</h4>
+
+<p>Let's assume, each record contains at least a <code>firstName</code> and a <code>lastName</code>. Allowing the plugin to search/highlight in both columns, you have to provide following line.
+<code>searchObjProps = 'firstName,lastName'</code></p>
+
+<h4>preFill (object or string)</h4>
+
+<p>Enables you to pre fill the box with selections when the page is first loaded. You can pass in a comma separated list of values (a string), or an object.</p>
+
+<p>When using a string, each value is used as both the display text on the selected item and for it's value.
+When using an object, the options <code>selectedItemProp</code> will define the object property to use for the display text and <code>selectedValuesProp</code> will define the object property to use for the value for the selected item.</p>
+
+<p>Note: You <em>must</em> setup your <code>preFill</code> object in that format. An example value can look just like the example objects laid out above.</p>
+
+<h3>UI</h3>
+
+<h4>emptyText (string)</h4>
+
+<p>Specify text to display when there are no search results.</p>
+
+<p>Default: <code>'No Results'</code></p>
+
+<h4>emptyTextPlaceholder (string)</h4>
+
+<p>RegEx to replace values in emptyText values with query text. If you search for <code>Hans</code> and there is no result and <code>showResultListWhenNoMatch</code> is true, then, a list with one, unselectable entry is shown containing the <code>emptyText</code>, which occurrences of <code>{0}</code> are replaced by the query String.</p>
+
+<p>Default: <code>/\{\d+\}/</code></p>
+
+<h4>limitText (string)</h4>
+
+<p>Specify text to display when the number of selections has reached it's limit.</p>
+
+<p>Default: <code>'No More Selections Are Allowed'</code></p>
+
+<h4>startText (string)</h4>
+
+<p>Specify text to display when the input field is empty.</p>
+
+<p>Default: <code>'Enter Name Here'</code></p>
+
+<h4>usePlaceholder (boolean)</h4>
+
+<p>Set <em>HTML5</em> placeholder attribute to display the <em>startText</em> when the input field is empty.</p>
+
+<p>Default: <code>false</code></p>
+
+<h4>keyDelay (number)</h4>
+
+<p>Number of milliseconds to delay after a keydown on the input field and before search is started.</p>
+
+<p>Default: <code>400</code></p>
+
+<h4>resultsHighlight</h4>
+
+<p>Option to choose whether or not to highlight the matched text in each result item.</p>
+
+<p>Default: <code>true</code></p>
+
+<h4>showResultList (boolean)</h4>
+
+<p>If set to <code>false</code> the result list will never be shown at any time.</p>
+
+<p>Default: <code>true</code></p>
+
+<h4>fadeOut (mixed)</h4>
+
+<p>Specify whether the removing of a selection should be animated (using fadeOut) or not.</p>
+
+<p>The value of <code>fadeOut</code> will be passed directly into <code>$.fn.fadeOut</code>.</p>
+
+<h3>Ajax</h3>
+
+<h4>ajaxOptions (object)</h4>
+
+<p>An additional options object for jQuery's <code>.ajax</code> (if the Ajax method is used). Example usage: Override the HTTP method into <em>POST</em>.</p>
+
+<p>The defaults will be merged unless they are overridden.</p>
+
+<div class="highlight"><pre><span class="c1">// Default</span>
+<span class="p">{</span><span class="nx">type</span> <span class="o">:</span> <span class="s1">'get'</span><span class="p">,</span> <span class="nx">dataType</span> <span class="o">:</span> <span class="s1">'json'</span><span class="p">}</span>
+</pre></div>
+
+<h4>queryParam (string)</h4>
+
+<p>The name of the param that will hold the search string value in the AJAX request.</p>
+
+<p>Default: <code>'q'</code></p>
+
+<h4>retrieveLimit (number)</h4>
+
+<p>If set to a number, it will add a '&amp;limit=' param to the AJAX request. It also limits the number of search results allowed to be displayed in the results dropdown box.</p>
+
+<h4>extraParams</h4>
+
+<p>These params will be applied to the <code>$.ajax</code> params.</p>
+
+<p>There are three ways provide params.
+1. Use an object which will be applied directly onto the internal <code>$.ajax</code> request's params.
+2. Use the deprecated way defining a string (prior version 2). But please note: Make sure you add an <code>&amp;</code> before each param. Otherwise you break it all..
+3. Use a callback function returning an object (or a string). The callback's first and only argument is the plugin's scope.</p>
+
+<h4>onAjaxRequestAlways (function)</h4>
+
+<p>A callback function which will be attached onto <code>$.ajax.always</code>.</p>
+
+<h4>onAjaxRequestDone (function)</h4>
+
+<p>A callback function which will be attached onto <code>$.ajax.done</code>.</p>
+
+<h4>onAjaxRequestFail (function)</h4>
+
+<p>A callback function which will be attached onto <code>$.ajax.fail</code>.</p>
+
+<h3>Callbacks</h3>
+
+<h4>start(api)</h4>
+
+<p>Provide some internal hooks with the specified <code>api</code> object. Currently, following methods are provided:
+1. <code>add(item)</code> will add another selection item
+1. <code>remove(item</code> will remove a selection item</p>
+
+<h4>afterSelectionClick (element, item, selections)</h4>
+
+<p>A callback that is run when a previously chosen item is clicked. The item that is clicked is passed into this callback function as <code>element</code>.</p>
+
+<h4>onSelectionAdd(element, markerElement, detachedElement, options)</h4>
+
+<p>A callback that do the actual dom operation (add the <code>detachedElement</code> before <code>markerElement</code>).</p>
+
+<div class="highlight"><pre><span class="nx">onSelectionAdd</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">markerElement</span><span class="p">,</span> <span class="nx">detachedElement</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">markerElement</span><span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="nx">detachedElement</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">containerElement</span><span class="p">.</span><span class="nx">prev</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>onSelectionRemove(element, options)</h4>
+
+<p>A callback that do the actual dom operation (remove the element).</p>
+
+<div class="highlight"><pre><span class="nx">onSelectionRemove</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">fadeOut</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">fadeOut</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">fadeOut</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">remove</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>afterSelectionAdd (element, item, selections)</h4>
+
+<p>A callback that is run when a selection is made by choosing one from the results dropdown or by using the tab/comma keys to add one. The selection item is passed into this callback function as <code>element</code>.</p>
+
+<p>Example</p>
+
+<div class="highlight"><pre><span class="nx">afterSelectionAdd</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">currentSelections</span><span class="p">){</span>
+  <span class="nx">MyApp</span><span class="p">.</span><span class="nx">addSelection</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>selectionRemove (element, item, selections)</h4>
+
+<p>A callback hat is run when a selection removed from the AutoSuggest by using the delete key or by clicking the "x" inside the selection. The selection item is passed into this callback function as <code>element</code>.</p>
+
+<p>Example:</p>
+
+<div class="highlight"><pre><span class="nx">afterSelectionRemove</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">currentSelections</span><span class="p">){</span>
+  <span class="nx">MyApp</span><span class="p">.</span><span class="nx">removeSelection</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>beforeRequest (query, options)</h4>
+
+<p>A callback that is run right before the Ajax request is made or before the local objected is searched. This is used to modify the search string before it is processed. So if a user entered <code>'jim'</code> into the AutoSuggest box, you can call this function to prepend their query with <code>'guy_'</code>. Making the final query <code>= 'guy_jim'</code>. The search query is passed into this function.</p>
+
+<p>Note: The callback <em>must</em> return a string if this is used.</p>
+
+<h4>afterRequest (data)</h4>
+
+<p>A callback that is run after the ajax request has completed. This allows modifiying the requested <code>data</code>.</p>
+
+<p>Note: The callback <em>must</em> return an object if this is used.</p>
+
+<h4>formatList (items, element)</h4>
+
+<p>A callback that is run after all the data has been retrieved and before the results are put into the suggestion results list. This is here so you can modify what and how things show up in the suggestion results list.</p>
+
+<p>The argument <code>items</code> is the data you originally passed into AutoSuggest (or retrieved via an AJAX request). The other argument <code>element</code> is the HTML element you will be formatting (the result <code>li</code> item).</p>
+
+<p>Note: The callback must return an element. If you don't care return <code>element</code>.</p>
+
+<p>In order to add extra things to the 'result item' (like an image) you will need to make sure you pass that data into AutoSuggest. Below is an example of <code>formatList</code> in action:</p>
+
+<div class="highlight"><pre><span class="nx">formatList</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">elem</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">my_image</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">image</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">new_elem</span> <span class="o">=</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="s2">"add/change stuff here, put image here, etc."</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">new_elem</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>onResultItemClick (data)</h4>
+
+<p>A callback that is run when a search result item is clicked. The data from the item that is clicked is passed into this callback function as <code>data</code>.</p>
+
+<p>Example:</p>
+
+<div class="highlight"><pre><span class="nx">onResultItemClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>afterResultListShow(visible)</h4>
+
+<p>A callback that is run when the suggestion results dropdown list is made visible. Will run after every search query.</p>
+
+<p>The argument <code>visible</code> indicates whether the result list is actually visible. Regarding the configuration, the result list will not be shown if there are not items available.</p>
+
+<h3>Methods</h3>
+
+<p>The plugin itself provides different methods depending on the internal state.</p>
+
+<h4>init (default)</h4>
+
+<p>Arguments: <code>data</code>, <code>options</code></p>
+
+<p>This is the default method and requires the options as described. This means that <code>$('input').autoSuggest('init', 'url', {})</code> is equal to <code>$('input').autoSuggest('url', {})</code>.</p>
+
+<h4>add</h4>
+
+<p>Arguments: <code>data</code> or array of <code>data</code></p>
+
+<p>Example 1:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'input'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="s1">'add'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">id</span> <span class="o">:</span> <span class="mi">4711</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:</span> <span class="s1">'Mick Jagger'</span>
+<span class="p">})</span>
+</pre></div>
+
+<p>Example 2:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'input'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="s1">'add'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">id</span> <span class="o">:</span> <span class="mi">4711</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:</span> <span class="s1">'Mick Jagger'</span>
+<span class="p">},</span> <span class="p">{</span>
+ <span class="nx">id</span> <span class="o">:</span> <span class="mi">4712</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:</span> <span class="s1">'Kelly Slater'</span>
+<span class="p">})</span>
+</pre></div>
+
+<h4>remove</h4>
+
+<p>Arguments: <code>value</code> or array of <code>value</code></p>
+
+<p>Example 1:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'input'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="s1">'remove'</span><span class="p">,</span> <span class="mi">4711</span><span class="p">)</span>
+</pre></div>
+
+<p>Example 2:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'input'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="s1">'remove'</span><span class="p">,</span> <span class="mi">4711</span><span class="p">,</span> <span class="mi">4722</span><span class="p">)</span>
+</pre></div>
 
 <h2>Examples</h2>
 
@@ -266,7 +569,7 @@
 
 <h2>Release History</h2>
 
-<h2>2012-07-?? Version 2.0.0</h2>
+<h2>2012-09-?? Version 2.0.0</h2>
 
 <p>The plugin project now uses <strong>CoffeeScript</strong> and <strong>SASS</strong> for source building. The unit tests run still with <strong>QUnit</strong>. <strong>grunt</strong> is used to manage dependencies, tasks and tests. In addition, <strong>Travis CI</strong> is now checking every commit.</p>
 
@@ -279,9 +582,22 @@
 <li>Extended <code>extraParams</code> being a plain object (with downgrade compatibility).</li>
 <li>Changed the Ajax call from <code>$.getJSON</code> to the more flexible <code>$.ajax</code>, besides introduced <code>ajaxOptions</code>.</li>
 <li>
-<strong>API change</strong>: <em>beforeRetrieve</em> was renamed to <em>beforeRequest</em> and added the second argument <code>options</code>.</li>
+<strong>API change</strong>: <em>beforeRetrieve</em> was renamed to <em>beforeRequest</em> and was added the second argument <code>options</code>.</li>
 <li>
 <strong>API change</strong>: <em>retrieveComplete</em> was renamed to <em>afterRequest</em>.</li>
+<li>
+<strong>API change</strong>: <em>selectionAdded</em> was renamed to <em>afterSelectionAdd</em>.</li>
+<li>
+<strong>API change</strong>: <em>selectionClick</em> was renamed to <em>afterSelectionClick</em>.</li>
+<li>
+<strong>API change</strong>: <em>selectionRemoved</em> was renamed to <em>onSelectionRemove</em>.</li>
+<li>
+<strong>API change</strong>: New event: <em>afterSelectionRemove</em>.</li>
+<li>Added a built-in <em>fadeOut</em> feature.</li>
+<li>
+<strong>API change</strong>: <em>resultClick</em> was renamed to <em>onResultItemClick</em>.</li>
+<li>
+<strong>API change</strong>: <em>resultsComplete</em> was renamed to <em>afterResultListShow</em>.</li>
 </ul><h2>2012-07-03 Version 1.7.0</h2>
 
 <ul>
