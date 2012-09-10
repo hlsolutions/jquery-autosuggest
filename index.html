@@ -47,7 +47,7 @@
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"dist/jquery.autoSuggest.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;script&gt;</span>
 <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">'input[type=text]'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'input[type=text]'</span><span class="p">).</span><span class="nx">autoSuggest</span><span class="p">(</span><span class="nx">dataSource</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
 <span class="p">});</span>
 <span class="nt">&lt;/script&gt;</span>
 </pre></div>
@@ -58,7 +58,7 @@
 
 <h2>How It Works</h2>
 
-<p>As you type into the AutoSuggest <code>input</code> box, it will filter through its <code>data</code> and suggest matched items to you. You can pass in an object of data or you can have it call a URL as you type to get its data from. AutoSuggest will display the matched items in a selectable list, which is 100% customizable. You have the option of structuring the HTML elements of that list however you want via the <code>formatList</code> callback function.</p>
+<p>As you type into the AutoSuggest <code>input</code> box, it will filter through its <code>dataSource</code> and suggest matched items to you. You can pass in an object of data or you can have it call a URL as you type to get its data from. AutoSuggest will display the matched items in a selectable list, which is 100% customizable. You have the option of structuring the HTML elements of that list however you want via the <code>formatList</code> callback function.</p>
 
 <p>When you type into the <code>input</code> box and the "suggestion" dropdown list appears, a few things happen:</p>
 
@@ -95,9 +95,9 @@
 <li>Chrome (all)</li>
 </ul><h2>Documentation</h2>
 
-<p>The plugin's constructor expects two arguments: <code>data</code> and <code>options</code>.</p>
+<p>The plugin's constructor expects two arguments: <code>dataSource</code> and <code>options</code>.</p>
 
-<p>The first argument <code>data</code> defines how the suggested results will be retrieved:</p>
+<p>The first argument <code>dataSource</code> defines how the suggested results will be retrieved:</p>
 
 <ul>
 <li>Use an <code>array</code> if you want to define a static list of items. Each item must be an object with properties which will match your <code>options</code> keys <code>selectedItemProp</code>, <code>selectedValuesProp</code> and <code>searchObjProps</code>.</li>
@@ -569,7 +569,7 @@ When using an object, the options <code>selectedItemProp</code> will define the 
 
 <h2>Release History</h2>
 
-<h2>2012-09-?? Version 2.0.0</h2>
+<h2>2012-09-11 Version 2.0.0</h2>
 
 <p>The plugin project now uses <strong>CoffeeScript</strong> and <strong>SASS</strong> for source building. The unit tests run still with <strong>QUnit</strong>. <strong>grunt</strong> is used to manage dependencies, tasks and tests. In addition, <strong>Travis CI</strong> is now checking every commit.</p>
 
