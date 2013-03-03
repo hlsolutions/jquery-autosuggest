@@ -491,6 +491,7 @@ pluginMethods =
       # TODO: needs definition
       element = null
       elementId = null
+      originalElementId = null
 
       # Configure local IDs.
       unless options.asHtmlID
@@ -502,7 +503,9 @@ pluginMethods =
         elementId = element
 
       # override always the id
+      originalElementId = $(this).attr("id")
       options.inputAttrs.id = elementId
+      options.inputAttrs.name = elementId
 
       # override placeholder if this is required
       unless options.usePlaceholder
@@ -519,7 +522,7 @@ pluginMethods =
       inputWrapper = $("#as-original-#{element}")
       resultsContainer = $("<div class=\"as-results\" id=\"as-results-#{element}\"></div>")
       resultsList =  $("<ul class=\"as-list\"></ul>")
-      hiddenInputField = $("<input type=\"hidden\" class=\"as-values\" name=\"as_values_#{element}\" id=\"as-values-#{element}\" />")
+      hiddenInputField = $("<input type=\"hidden\" class=\"as-values\" name=\"{originalElementId}\" id=\"{originalElementId}\" />")
 
       currentSelection = new SelectionHolder(hiddenInputField)
       interval = null
