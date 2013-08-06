@@ -887,13 +887,6 @@ pluginMethods =
                 lastKeyWasTab = false
                 active.click()
                 resultsContainer.hide()
-                event.preventDefault()
-            when 13 # return
-              lastKeyWasTab = false
-              active = resultsContainer.find('li.active:first')
-              if active.length
-                active.click()
-                resultsContainer.hide()
               if options.neverSubmit || active.length
                 event.preventDefault()
             when 27 # esc
