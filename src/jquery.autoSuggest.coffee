@@ -872,7 +872,10 @@ pluginMethods =
                 # remove all comma
                 i_input = input.val().replace /(,)/g, ''
                 ### Generate a new bubble with text when no suggestion selected ###
-                if i_input isnt '' && !currentSelection.exist(i_input) && i_input.length >= options.minChars && active.length is 0 && (options.neverSubmit || event.keyCode != 13)
+                if i_input isnt '' && !currentSelection.exist(i_input) &&
+                   i_input.length >= options.minChars && active.length is 0 &&
+                   (options.neverSubmit || event.keyCode != 13) &&
+                   (!options.selectionLimit || selectionsContainer.find('li.as-selection-item').length < options.selectionLimit)
                   event.preventDefault()
                   n_data = {}
                   n_data["#{options.selectedItemProp}"] = i_input

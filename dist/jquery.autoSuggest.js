@@ -1,4 +1,4 @@
-/*! jQuery AutoSuggest - v2.3.0 - 2013-08-05
+/*! jQuery AutoSuggest - v2.3.0 - 2013-08-06
  * URL: http://hlsolutions.github.com/jquery-autosuggest
  * Copyright (c) 2013 Jan Philipp
  * Licensed MIT, GPL */
@@ -1028,7 +1028,7 @@ Based on the 1.6er release dated in July, 2012
                   i_input = input.val().replace(/(,)/g, '');
                   /* Generate a new bubble with text when no suggestion selected*/
 
-                  if (i_input !== '' && !currentSelection.exist(i_input) && i_input.length >= options.minChars && active.length === 0 && (options.neverSubmit || event.keyCode !== 13)) {
+                  if (i_input !== '' && !currentSelection.exist(i_input) && i_input.length >= options.minChars && active.length === 0 && (options.neverSubmit || event.keyCode !== 13) && (!options.selectionLimit || selectionsContainer.find('li.as-selection-item').length < options.selectionLimit)) {
                     event.preventDefault();
                     n_data = {};
                     n_data["" + options.selectedItemProp] = i_input;
